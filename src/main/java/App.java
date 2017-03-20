@@ -15,5 +15,23 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/amount", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      Float userFloat = Float.parseFloat(request.queryParams("changeForm"));
+      ChangeMachine newMachine = new ChangeMachine();
+      String userChange = newMachine.makeChange(userFloat);
+      String sorry = "Sorry the machine is out of change";
+      model.put("changeForm", request.queryParams("changeForm"));
+      model.put("template", "templates/amount.vtl" );
+      if (userFloat < 8.20) {
+        model.put("finalOutput", userChange);
+      } else { model.put("finalOutput", sorry);
+
+      }
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+
+
   }
 }
